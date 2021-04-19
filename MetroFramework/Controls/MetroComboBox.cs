@@ -172,7 +172,7 @@ namespace MetroFramework.Controls
             Color backColor, borderColor, foreColor;
 
             if (Parent != null)
-                backColor = Parent.BackColor;
+                backColor = Color.FromArgb(255, 255, 255);//默认色为白色
             else
                 backColor = MetroPaint.BackColor.Form(Theme);
 

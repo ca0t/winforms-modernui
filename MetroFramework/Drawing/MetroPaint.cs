@@ -222,8 +222,8 @@ namespace MetroFramework.Drawing
                 {
                     if (theme == MetroThemeStyle.Dark)
                         return Color.FromArgb(34, 34, 34);
-
-                    return Color.FromArgb(238, 238, 238);
+                    ////默认色为白色
+                    return Color.FromArgb(255, 255, 255);
                 }
 
                 public static Color Hover(MetroThemeStyle theme)
@@ -405,8 +405,8 @@ namespace MetroFramework.Drawing
                     {
                         if (theme == MetroThemeStyle.Dark)
                             return Color.FromArgb(38, 38, 38);
-
-                        return Color.FromArgb(234, 234, 234);
+                        //默认白色
+                        return Color.FromArgb(255,255,255);
                     }
 
                     public static Color Hover(MetroThemeStyle theme)

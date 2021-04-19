@@ -67,6 +67,47 @@ namespace MetroFramework.Controls
             set { metroTheme = value; }
         }
 
+        //新增磁贴图片
+        private Image tileImage = null;
+        [Category("Metro Appearance")]
+        public Image TileImage
+        {
+            get { return tileImage; }
+            set { tileImage = value; }
+        }
+        //磁贴图片缩放模式
+        private PictureBoxSizeMode tileImageMode = PictureBoxSizeMode.Normal;
+        [Category("Metro Appearance")]
+        public PictureBoxSizeMode TileImageMode
+        {
+            get { return tileImageMode; }
+            set { tileImageMode = value; Invalidate(); }
+        }
+        //新增按钮字体修改
+        private MetroLabelSize metroLabelSize = MetroLabelSize.Medium;
+        [Category("Metro Appearance")]
+        public MetroLabelSize FontSize
+        {
+            get { return metroLabelSize; }
+            set { metroLabelSize = value; Refresh(); }
+        }
+        //新增按钮字体修改
+        private MetroLabelWeight metroLabelWeight = MetroLabelWeight.Light;
+        [Category("Metro Appearance")]
+        public MetroLabelWeight FontWeight
+        {
+            get { return metroLabelWeight; }
+            set { metroLabelWeight = value; Refresh(); }
+        }
+        //新增按钮文字位置布局
+        private MetroLabelWeight metroLabelWeight = MetroLabelWeight.Light;
+        [Category("Metro Appearance")]
+        public MetroLabelWeight FontWeight
+        {
+            get { return metroLabelWeight; }
+            set { metroLabelWeight = value; Refresh(); }
+        }
+
         private MetroStyleManager metroStyleManager = null;
         [Browsable(false)]
         public MetroStyleManager StyleManager
@@ -168,12 +209,52 @@ namespace MetroFramework.Controls
             else
             {
                 e.Graphics.Clear(MetroPaint.BackColor.Form(Theme));
-                
+
                 using (SolidBrush b = MetroPaint.GetStyleBrush(Style))
                 {
-                    Point[] polyPoints = new Point[] { new Point(0,0), new Point(Width-1,2),new Point(Width-1,Height-2),new Point(0,Height) };
+                    Point[] polyPoints = new Point[] { new Point(0, 0), new Point(Width - 1, 2), new Point(Width - 1, Height - 2), new Point(0, Height) };
                     e.Graphics.FillPolygon(b, polyPoints);
                 }
+            }
+            //画图片
+            if (TileImage!=null)
+            {
+                Rectangle result = DisplayRectangle;
+                switch (tileImageMode)
+                {
+                    case PictureBoxSizeMode.Normal:
+                    case PictureBoxSizeMode.AutoSize:
+                        result.Size = tileImage.Size;
+                        break;
+                    case PictureBoxSizeMode.StretchImage:
+                        //居中,大小为磁贴的 长或宽中最小值 的一半
+                        int num;
+                        if (Width > Height)
+                            num = Height;
+                        else
+                            num = Width;
+                        result.Width = num / 2;
+                        result.Height = num / 2;
+                        result.X = (ClientRectangle.Width - result.Width) / 2;
+                        result.Y = (ClientRectangle.Height - result.Height) / 2;
+                        break;
+                    case PictureBoxSizeMode.CenterImage:
+                        result.X += (result.Width - tileImage.Width) / 2;
+                        result.Y += (result.Height - tileImage.Height) / 2;
+                        result.Size = tileImage.Size;
+                        break;
+                    case PictureBoxSizeMode.Zoom:
+                        Size imageSize = tileImage.Size;
+                        float ratio = Math.Min((float)ClientRectangle.Width / (float)imageSize.Width, (float)ClientRectangle.Height / (float)imageSize.Height);
+                        result.Width = (int)(imageSize.Width * ratio);
+                        result.Height = (int)(imageSize.Height * ratio);
+                        result.X = (ClientRectangle.Width - result.Width) / 2;
+                        result.Y = (ClientRectangle.Height - result.Height) / 2;
+                        break;
+                    default:
+                        break;
+                }
+                e.Graphics.DrawImage(tileImage, result);
             }
 
             if (TileCount > 0)
@@ -186,7 +267,7 @@ namespace MetroFramework.Controls
             }
 
             Size textSize = TextRenderer.MeasureText(Text, MetroFonts.Tile);
-            TextRenderer.DrawText(e.Graphics, Text, MetroFonts.Tile, new Point(0, Height-textSize.Height), foreColor);
+            TextRenderer.DrawText(e.Graphics, Text, MetroFonts.Label(metroLabelSize, metroLabelWeight), new Point(0, Height - textSize.Height), foreColor);
 
 
             if (false && isFocused)

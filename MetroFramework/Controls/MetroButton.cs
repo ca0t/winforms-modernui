@@ -76,6 +76,22 @@ namespace MetroFramework.Controls
             set { metroStyleManager = value; }
         }
 
+        //新增按钮字体修改
+        private MetroLabelSize metroLabelSize = MetroLabelSize.Medium;
+        [Category("Metro Appearance")]
+        public MetroLabelSize FontSize
+        {
+            get { return metroLabelSize; }
+            set { metroLabelSize = value; Refresh(); }
+        }
+        //新增按钮字体修改
+        private MetroLabelWeight metroLabelWeight = MetroLabelWeight.Light;
+        [Category("Metro Appearance")]
+        public MetroLabelWeight FontWeight
+        {
+            get { return metroLabelWeight; }
+            set { metroLabelWeight = value; Refresh(); }
+        }
         #endregion
 
         #region Fields
@@ -155,7 +171,9 @@ namespace MetroFramework.Controls
                 }
             }
 
-            TextRenderer.DrawText(e.Graphics, Text, MetroFonts.Button, ClientRectangle, foreColor, backColor, MetroPaint.GetTextFormatFlags(TextAlign));
+            //TextRenderer.DrawText(e.Graphics, Text, MetroFonts.Button, ClientRectangle, foreColor, backColor, MetroPaint.GetTextFormatFlags(TextAlign));
+            //字体修改为用户指定字体
+            TextRenderer.DrawText(e.Graphics, Text, MetroFonts.Label(metroLabelSize, metroLabelWeight), ClientRectangle, foreColor, backColor, MetroPaint.GetTextFormatFlags(TextAlign));
 
             if (false && isFocused)
                 ControlPaint.DrawFocusRectangle(e.Graphics, ClientRectangle);
