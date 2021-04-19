@@ -99,14 +99,6 @@ namespace MetroFramework.Controls
             get { return metroLabelWeight; }
             set { metroLabelWeight = value; Refresh(); }
         }
-        //新增按钮文字位置布局
-        private MetroLabelWeight metroLabelWeight = MetroLabelWeight.Light;
-        [Category("Metro Appearance")]
-        public MetroLabelWeight FontWeight
-        {
-            get { return metroLabelWeight; }
-            set { metroLabelWeight = value; Refresh(); }
-        }
 
         private MetroStyleManager metroStyleManager = null;
         [Browsable(false)]
